@@ -41,22 +41,38 @@
         }
       },
       methods: {
-        async onSubmit() {
-          this.error = null
-          this.loading = true
+async onSubmit() {
+  this.error = null
+  this.loading = true
 
-          try {
-            // Demo login check (replace with fetch to PHP later)
-            if (this.username === "hradmin" && this.password === "Password123") {
-              alert("Login successful!")
-              // window.location.href = "dashboard.php" // optional later
-            } else {
-              this.error = "Invalid username or password."
-            }
-          } finally {
-            this.loading = false
-          }
-        }
+  try {
+    const res = await fetch("../Backend/Auth/Login.php", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        username: this.username,
+        password: this.password
+      })
+    })
+
+    const data = await res.json()
+
+    if (!data.success) {
+      this.error = data.message
+      return
+    }
+
+    // success
+    console.log("Logged in:", data.user)
+    // example redirect:
+    // window.location.href = "../Frontend/Dashboard.html"
+
+  } catch (e) {
+    this.error = "Could not connect to server."
+  } finally {
+    this.loading = false
+  }
+}
       }
     }).mount("#Login")
   </script>
