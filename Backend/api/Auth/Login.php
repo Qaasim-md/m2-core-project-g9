@@ -5,10 +5,10 @@ header("Access-Control-Allow-Headers: Content-Type");
 header("Access-Control-Allow-Methods: POST, OPTIONS");
 
 if ($_SERVER["REQUEST_METHOD"] === "OPTIONS") {
-  exit(0);
+  exit;
 }
 
-require_once '../Config/database.php';
+require_once '../../Config/database.php';
 
 $database = new Database();
 $db = $database->getConnection();
